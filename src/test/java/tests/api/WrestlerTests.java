@@ -122,8 +122,6 @@ public class WrestlerTests {
                 .execute(String.class);
 
         //than
-        System.out.println(response.getBody());
-        System.out.println(wrestlerId);
         assertEquals("Incorrect response status code", HttpStatus.OK, response.getStatusCode());
         assertTrue("Unexpected result: " + response.getBody(), response.getBody().contains("\"result\":true"));
     }
