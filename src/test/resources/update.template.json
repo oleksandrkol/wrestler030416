@@ -1,0 +1,15 @@
+{
+  "id_wrestler":"ID_PLACEHOLDER",
+  "lname": "Hammett",
+  "fname": "Kirk",
+  "mname": "Mettalica",
+  "dob": "18-11-1962",
+  "style": "1",
+  "region1": "11",
+  "region2": "10",
+  "fst1": "2",
+  "fst2": "6",
+  "expires": "2015",
+  "lictype": "1",
+  "card_state": "1"
+}
