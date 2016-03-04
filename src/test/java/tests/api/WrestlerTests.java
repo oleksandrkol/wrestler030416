@@ -1,6 +1,8 @@
 package tests.api;
 
-import domain.Status;
+import common.FileReader;
+import common.JsonParser;
+import common.RequestBuilder;
 import org.json.simple.parser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,9 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import common.FileReader;
-import common.JsonToObject;
-import common.RequestBuilder;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -21,7 +20,7 @@ public class WrestlerTests {
 
     private RestTemplate restTemplate = new RestTemplate();
     private FileReader fileReader = new FileReader();
-    private JsonToObject jsonToObject = new JsonToObject();
+    private JsonParser jsonParser = new JsonParser();
     private long wrestlerId;
     private String cookies;
 
@@ -60,8 +59,7 @@ public class WrestlerTests {
         assertEquals("Incorrect response status code", HttpStatus.OK, response.getStatusCode());
         assertTrue("Unexpected result: " + responseBody, responseBody.contains("\"result\":true"));
 
-        Status status = jsonToObject.getStatus(responseBody);
-        wrestlerId = status.getId();
+        wrestlerId = jsonParser.getId(responseBody);
     }
 
     @Test
