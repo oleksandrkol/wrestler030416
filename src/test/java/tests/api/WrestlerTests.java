@@ -76,8 +76,9 @@ public class WrestlerTests {
                 .execute(String.class);
 
         //than
+        String responseBody = response.getBody();
         assertEquals("Incorrect response status code", HttpStatus.OK, response.getStatusCode());
-        assertTrue("Unexpected result: " + response.getBody(), response.getBody().contains("\"result\":true"));
+        assertTrue("Unexpected result: " + responseBody, responseBody.contains("\"result\":true"));
     }
 
     @Test
@@ -120,7 +121,8 @@ public class WrestlerTests {
                 .execute(String.class);
 
         //than
+        String responseBody = response.getBody();
         assertEquals("Incorrect response status code", HttpStatus.OK, response.getStatusCode());
-        assertTrue("Unexpected result: " + response.getBody(), response.getBody().contains("\"result\":true"));
+        assertTrue("Unexpected result: " + responseBody, responseBody.contains("\"result\":true"));
     }
 }
