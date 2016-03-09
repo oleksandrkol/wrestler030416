@@ -2,6 +2,7 @@ package tests.api;
 
 import common.FileReader;
 import common.JsonParser;
+import common.PropertiesLoader;
 import common.RequestBuilder;
 import org.json.simple.parser.ParseException;
 import org.junit.Before;
@@ -12,11 +13,21 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Properties;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 
 public class WrestlerTests {
+
+    private Properties properties = new PropertiesLoader().loadProperties();
+    private String LOGIN_URL = properties.getProperty("LOGIN_URL");
+    private String CREATE_URL = properties.getProperty("CREATE_URL");
+    private String DELETE_URL = properties.getProperty("DELETE_URL");
+    private String READ_URL = properties.getProperty("READ_URL");
+    private String UPDATE_URL = properties.getProperty("UPDATE_URL");
+
 
     private RestTemplate restTemplate = new RestTemplate();
     private FileReader fileReader = new FileReader();
@@ -26,12 +37,12 @@ public class WrestlerTests {
 
     @Before
     public void login () {
-        String URL = "http://streamtv.net.ua/base/php/login.php";
+//        String URL = "http://streamtv.net.ua/base/php/login.php";
         String body = fileReader.fileToString("login.json");
 
         ResponseEntity<String> response = new RequestBuilder()
                 .template(restTemplate)
-                .post(URL)
+                .post(LOGIN_URL)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .body(body)
                 .execute(String.class);
@@ -42,13 +53,12 @@ public class WrestlerTests {
     @Test
     public void createWrestlerTest () throws ParseException {
         //given
-        String URL = "http://streamtv.net.ua/base/php/wrestler/create.php";
         String body = fileReader.fileToString("create.json");
 
         //when
         ResponseEntity<String> response = new RequestBuilder()
                 .template(restTemplate)
-                .post(URL)
+                .post(CREATE_URL)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.COOKIE, cookies)
                 .body(body)
@@ -68,7 +78,7 @@ public class WrestlerTests {
         createWrestlerTest();
 
         //when
-        String URL = "http://streamtv.net.ua/base/php/wrestler/delete.php?id=" + wrestlerId;
+        String URL = DELETE_URL + wrestlerId;
         ResponseEntity<String> response = new RequestBuilder()
                 .template(restTemplate)
                 .get(URL)
@@ -87,7 +97,7 @@ public class WrestlerTests {
         createWrestlerTest();
 
         //when
-        String URL = "http://streamtv.net.ua/base/php/wrestler/read.php?id=" + wrestlerId;
+        String URL = READ_URL + wrestlerId;
         ResponseEntity<String> response = new RequestBuilder()
                 .template(restTemplate)
                 .get(URL)
@@ -111,10 +121,9 @@ public class WrestlerTests {
         String template = fileReader.fileToString("update.template.json");
         String body = template.replaceAll("ID_PLACEHOLDER", String.valueOf(wrestlerId));
 
-        String URL = "http://streamtv.net.ua/base/php/wrestler/update.php";
         ResponseEntity<String> response = new RequestBuilder()
                 .template(restTemplate)
-                .post(URL)
+                .post(UPDATE_URL)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.COOKIE, cookies)
                 .body(body)
