@@ -37,7 +37,6 @@ public class WrestlerTests {
 
     @Before
     public void login () {
-//        String URL = "http://streamtv.net.ua/base/php/login.php";
         String body = fileReader.fileToString("login.json");
 
         ResponseEntity<String> response = new RequestBuilder()
